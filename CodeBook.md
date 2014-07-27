@@ -1,26 +1,136 @@
 Getting and Cleaning Data Course Project CodeBook
 This file describes the variables, 
+Feature Selection 
+=================
 
-The data for the project:
-https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+The features selected for this database come from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ. These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz. 
 
-The run_analysis.R script performs the following steps to clean the data:
+Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). 
 
-Read X_train.txt, y_train.txt and subject_train.txt from the "./data/train" folder and store them in trainData, trainLabel and trainSubject variables respectively.
+Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals). 
 
-Read X_test.txt, y_test.txt and subject_test.txt from the "./data/test" folder and store them in testData, testLabel and testsubject variables respectively.
+These signals were used to estimate variables of the feature vector for each pattern:  
+'-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
 
-Concatenate testData to trainData to generate a 10299x561 data frame, joinData; concatenate testLabel to trainLabel to generate a 10299x1 data frame, joinLabel; concatenate testSubject to trainSubject to generate a 10299x1 data frame, joinSubject.
+tBodyAcc-XYZ
+tGravityAcc-XYZ
+tBodyAccJerk-XYZ
+tBodyGyro-XYZ
+tBodyGyroJerk-XYZ
+tBodyAccMag
+tGravityAccMag
+tBodyAccJerkMag
+tBodyGyroMag
+tBodyGyroJerkMag
+fBodyAcc-XYZ
+fBodyAccJerk-XYZ
+fBodyGyro-XYZ
+fBodyAccMag
+fBodyAccJerkMag
+fBodyGyroMag
+fBodyGyroJerkMag
 
-Read the features.txt file from the "/data" folder and store the data in a variable called features. We only extract the measurements on the mean and standard deviation. This results in a 66 indices list. We get a subset of joinData with the 66 corresponding columns.
-Clean the column names of the subset. We remove the "()" and "-" symbols in the names, as well as make the first letter of "mean" and "std" a capital letter "M" and "S" respectively.
+The set of variables that were estimated from these signals are: 
 
-Read the activity_labels.txt file from the "./data"" folder and store the data in a variable called activity.
-Clean the activity names in the second column of activity. We first make all names to lower cases. If the name has an underscore between letters, we remove the underscore and capitalize the letter immediately after the underscore.
-Transform the values of joinLabel according to the activity data frame.
+mean(): Mean value
+std(): Standard deviation
+mad(): Median absolute deviation 
+max(): Largest value in array
+min(): Smallest value in array
+sma(): Signal magnitude area
+energy(): Energy measure. Sum of the squares divided by the number of values. 
+iqr(): Interquartile range 
+entropy(): Signal entropy
+arCoeff(): Autorregresion coefficients with Burg order equal to 4
+correlation(): correlation coefficient between two signals
+maxInds(): index of the frequency component with largest magnitude
+meanFreq(): Weighted average of the frequency components to obtain a mean frequency
+skewness(): skewness of the frequency domain signal 
+kurtosis(): kurtosis of the frequency domain signal 
+bandsEnergy(): Energy of a frequency interval within the 64 bins of the FFT of each window.
+angle(): Angle between to vectors.
 
-Combine the joinSubject, joinLabel and joinData by column to get a new cleaned 10299x68 data frame, cleanedData. Properly name the first two columns, "subject" and "activity". The "subject" column contains integers that range from 1 to 30 inclusive; the "activity" column contains 6 kinds of activity names; the last 66 columns contain measurements that range from -1 to 1 exclusive.
-Write the cleanedData out to "merged_data.txt" file in current working directory.
+Additional vectors obtained by averaging the signals in a signal window sample. These are used on the angle() variable:
 
-Finally, generate a second independent tidy data set with the average of each measurement for each activity and each subject. We have 30 unique subjects and 6 unique activities, which result in a 180 combinations of the two. Then, for each combination, we calculate the mean of each measurement with the corresponding combination. So, after initializing the result data frame and performing the two for-loops, we get a 180x68 data frame.
-Write the result out to "data_with_means.txt" file in current working directory.
+gravityMean
+tBodyAccMean
+tBodyAccJerkMean
+tBodyGyroMean
+tBodyGyroJerkMean
+
+
+ $ subject                 : int  [1:30] 
+ $ activity                : Factor w/ 6 levels 
+                            1 walking
+                            2 walkingUpstairs
+                            3 walkingDownstairs
+                            4 sitting
+                            5 standing
+                            6 laying
+
+ $ tBodyAccMeanX           :  time body acceleration mean for X axial
+ $ tBodyAccMeanY           :  time body acceleration mean for Y axial
+ $ tBodyAccMeanZ           :  time body acceleration mean for Z axial
+ $ tBodyAccStdX            :  time body acceleration Standard deviation for X axial
+ $ tBodyAccStdY            :  time body acceleration Standard deviation for Y axial
+ $ tBodyAccStdZ            :  time body acceleration Standard deviation for Z axial
+ $ tGravityAccMeanX        :  time gravity acceleration mean for X axial
+ $ tGravityAccMeanY        :  time gravity acceleration mean for Y axial
+ $ tGravityAccMeanZ        :  time gravity acceleration mean for Z axial
+ $ tGravityAccStdX         :  time gravity acceleration standard deviation for X axial
+ $ tGravityAccStdY         :  time gravity acceleration standard deviation for Y axial
+ $ tGravityAccStdZ         :  time gravity acceleration standard deviation for Z axial
+ $ tBodyAccJerkMeanX       :  time body acceleration jerk mean for X axial
+ $ tBodyAccJerkMeanY       :  time body acceleration jerk mean for Y axial
+ $ tBodyAccJerkMeanZ       :  time body acceleration jerk mean for Z axial
+ $ tBodyAccJerkStdX        :  time body acceleration jerk standard deviation for X axial
+ $ tBodyAccJerkStdY        :  time body acceleration jerk standard deviation for Y axial
+ $ tBodyAccJerkStdZ        :  time body acceleration jerk standard deviation for Z axial
+ $ tBodyGyroMeanX          :  time body gyroscope mean for X axial
+ $ tBodyGyroMeanY          :  time body gyroscope mean for Y axial
+ $ tBodyGyroMeanZ          :  time body gyroscope mean for Z axial
+ $ tBodyGyroStdX           :  time body gyroscope standard deviation for X axial
+ $ tBodyGyroStdY           :  time body gyroscope standard deviation for Y axial
+ $ tBodyGyroStdZ           :  time body gyroscope standard deviation for Z axial
+ $ tBodyGyroJerkMeanX      :  time body gyroscope jerk mean for X axial
+ $ tBodyGyroJerkMeanY      :  time body gyroscope jerk mean for Y axial
+ $ tBodyGyroJerkMeanZ      :  time body gyroscope jerk mean for Z axial
+ $ tBodyGyroJerkStdX       :  time body gyroscope jerk standard deviation for X axial
+ $ tBodyGyroJerkStdY       :  time body gyroscope jerk standard deviation for Y axial
+ $ tBodyGyroJerkStdZ       :  time body gyroscope jerk standard deviation for Z axial
+ $ tBodyAccMagMean         :  time body accelerometer mean 
+ $ tBodyAccMagStd          :  time body accelerometer standard deviation
+ $ tGravityAccMagMean      :  time gravity accelerometer mean
+ $ tGravityAccMagStd       :  time gravity accelerometer standard deviation 
+ $ tBodyAccJerkMagMean     :  time body accelerometer jerk mean
+ $ tBodyAccJerkMagStd      :  time body accelerometer jerk standard deviation 
+ $ tBodyGyroMagMean        :  time body gyroscope mean 
+ $ tBodyGyroMagStd         :  time body gyroscope standard deviation 
+ $ tBodyGyroJerkMagMean    :  time body gyroscope jerk mean 
+ $ tBodyGyroJerkMagStd     :  time body gyroscope jerk standard deviation 
+ $ fBodyAccMeanX           :  FFT body accelerometer mean for X axial
+ $ fBodyAccMeanY           :  FFT body accelerometer mean for Y axial   
+ $ fBodyAccMeanZ           :  FFT body accelerometer mean for Z axial
+ $ fBodyAccStdX            :  FFT body accelerometer standard deviation for X axial
+ $ fBodyAccStdY            :  FFT body accelerometer standard deviation for Y axial
+ $ fBodyAccStdZ            :  FFT body accelerometer standard deviation for Z axial
+ $ fBodyAccJerkMeanX       :  FFT body accelerometer jerk mean for X axial
+ $ fBodyAccJerkMeanY       :  FFT body accelerometer jerk mean for Y axial
+ $ fBodyAccJerkMeanZ       :  FFT body accelerometer jerk mean for Z axial
+ $ fBodyAccJerkStdX        :  FFT body accelerometer jerk standard deviation for X axial
+ $ fBodyAccJerkStdY        :  FFT body accelerometer jerk standard deviation for Y axial
+ $ fBodyAccJerkStdZ        :  FFT body accelerometer jerk standard deviation for Z axial
+ $ fBodyGyroMeanX          :  FFT body gyroscope mean for x axial
+ $ fBodyGyroMeanZ          :  FFT body gyroscope mean for Z axial
+ $ fBodyGyroStdX           :  FFT body gyroscope standard deviation for x axial
+ $ fBodyGyroStdY           :  FFT body gyroscope standard deviation for Y axial
+ $ fBodyGyroStdZ           :  FFT body gyroscope standard deviation for Z axial
+ $ fBodyAccMagMean         :  FFT body accelerometer mean for x axial
+ $ fBodyAccMagStd          :  FFT body accelerometer standard deviation 
+ $ fBodyBodyAccJerkMagMean :  FFT body accelerometer jerk mean 
+ $ fBodyBodyAccJerkMagStd  :  FFT body accelerometer jerk standard deviation 
+ $ fBodyBodyGyroMagMean    :  FFT body gyroscope mean
+ $ fBodyBodyGyroMagStd     :  FFT body gyroscope standard deviation 
+ $ fBodyBodyGyroJerkMagMean:  FFT body gyroscope jerk mean
+ $ fBodyBodyGyroJerkMagStd :  FFT body gyroscope jerk standard deviation 
+ 
